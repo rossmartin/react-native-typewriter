@@ -20,14 +20,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 })
-const TypeWriter: React.FC<TypewriterProps> = ({
+
+const TypeWriter = ({
   textArray,
   speed = DEFAULT_SPEED,
   loop = false,
   delay = DEFAULT_DELAY,
   textStyle,
   cursorStyle,
-}) => {
+  style,
+  onFinish,
+}: TypewriterProps) => {
   const [stringIndex, setStringIndex] = useState(0)
   const [textIndex, setTextIndex] = useState(0)
   const opacityValue = useRef(new Animated.Value(0)).current
@@ -67,6 +70,8 @@ const TypeWriter: React.FC<TypewriterProps> = ({
               setTextIndex(0)
               setStringIndex(0)
             }, delay)
+          } else {
+            onFinish?.()
           }
         }
       }
@@ -74,7 +79,7 @@ const TypeWriter: React.FC<TypewriterProps> = ({
   })
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text style={textStyle ? textStyle : styles.text}>
         {textArray[stringIndex].substring(0, textIndex)}
       </Text>
